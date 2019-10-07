@@ -5,9 +5,11 @@ from PIL import Image
 path_img="images/"
 nbc=5
 
+"""
 if not "images" in os.listdir("./"): os.mkdir("images/")
 for o in os.listdir("images/"):
     os.remove("images/"+o)
+"""
 
 def methode1(x1,x2,y1,y2,iteration_max,itx,ity):
     t1=time.time()
@@ -54,18 +56,21 @@ def methode1(x1,x2,y1,y2,iteration_max,itx,ity):
 tex,tey=1024,1024
 x,y=-0.1011,0.9563
 n=0
-n1,n2=1000,5000
+n1,n2=1,10000
 pas=100
+ratio=10000
 nt=(n2-n1)/pas
 for w in range(n1,n2,pas)[::-1]:
+    
     n+=1
     print("\nIMAGE "+str(n)+"/"+str(nt))
-    ww=w/5000.0
+    www=w/ratio
+    ww=www/5000.0
     x1=x-ww
     x2=x+ww
     y1=y-ww
     y2=y+ww
-    itmax=100
+    itmax=200
     tt=methode1(x1,x2,y1,y2,itmax,tex,tey)
     ttt=tt*(nt-n)*1.5
     txt="temps restant : environ "
