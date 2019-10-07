@@ -4,34 +4,23 @@ from PIL import Image
 
 path_img="images/"
 nbc=5
-"""
+
 if not "images" in os.listdir("./"): os.mkdir("images/")
 for o in os.listdir("images/"):
     os.remove("images/"+o)
-"""
-def methode1(x1,x2,y1,y2,zoom,iteration_max,itx,ity):
+
+def methode1(x1,x2,y1,y2,iteration_max,itx,ity):
     t1=time.time()
-    #on définit la zone que l'on dessine. Ici, la fractale en entière
-    #x1 = -2.1
-    #x2 = 0.6
-    #y1 = -1.2
-    #y2 = 1.2
-    #zoom = 3000 #pour une distance de 1 sur le plan, on a 100 pixel sur l'image
-    #on calcule la taille de l'image :
-    image_x = int((x2 - x1) * zoom)
-    image_y = int((y2 - y1) * zoom)
-    if abs(image_x-itx)<=10: image_x=itx
-    if abs(image_y-ity)<=10: image_y=ity
-    print("image x : "+str(image_x))
-    print("image y : "+str(image_y))
-    img=Image.new("RGB",[image_x,image_y])
+    image_x=itx
+    image_y=ity
+    zoom_x = image_x/(x2 - x1)
+    zoom_y = image_y/(y2 - y1)
+    img=Image.new("RGB",[itx,ity])
     im=img.load()
-    #Pour x = 0 tant que x < image_x par pas de 1 
-    for x in range(0,image_x,1):
-        #Pour y = 0 tant que y < image_y par pas de 1
-        for y in range(0,image_y,1):
-            c_r = x / zoom + x1
-            c_i = y / zoom + y1
+    for x  in range(0,image_x,1):
+        for y  in range(0,image_y,1):
+            c_r = x / zoom_x + x1
+            c_i = y / zoom_y + y1
             z_r = 0
             z_i = 0
             i = 0
@@ -41,6 +30,7 @@ def methode1(x1,x2,y1,y2,zoom,iteration_max,itx,ity):
                 z_r = z_r*z_r - z_i*z_i + c_r
                 z_i = 2*z_i*tmp + c_i
                 i = i+1
+                
             if i/iteration_max <= 0.33:
                 vc=int(i/iteration_max*125)
                 im[x,y]=(0,0,vc)
@@ -75,9 +65,8 @@ for w in range(n1,n2,pas)[::-1]:
     x2=x+ww
     y1=y-ww
     y2=y+ww
-    zoom=tex/(x2-x1)
-    itmax=zoom+20
-    tt=methode1(x1,x2,y1,y2,zoom,itmax,tex,tey)
+    itmax=100
+    tt=methode1(x1,x2,y1,y2,itmax,tex,tey)
     ttt=tt*(nt-n)*1.5
     txt="temps restant : environ "
     if ttt >= 3600:
@@ -87,7 +76,7 @@ for w in range(n1,n2,pas)[::-1]:
         txt+=str(int(ttt//60))+" minutes "
         ttt=ttt%60
     if tt >= 1:
-        txt+=str(int(ttt//1))+" secondes"
+        txt+=str(int(ttt//1))+" secondes "
         ttt=ttt%1
     txt+=str(int(ttt*1000))+" milisecondes"
     print(txt)
