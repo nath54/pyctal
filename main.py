@@ -5,11 +5,11 @@ from PIL import Image
 path_img="images/"
 nbc=5
 
-"""
+
 if not "images" in os.listdir("./"): os.mkdir("images/")
 for o in os.listdir("images/"):
     os.remove("images/"+o)
-"""
+
 
 def methode1(x1,x2,y1,y2,iteration_max,itx,ity):
     t1=time.time()
@@ -33,14 +33,20 @@ def methode1(x1,x2,y1,y2,iteration_max,itx,ity):
                 z_i = 2*z_i*tmp + c_i
                 i = i+1
                 
-            if i/iteration_max <= 0.33:
-                vc=int(i/iteration_max*125)
+            if i/iteration_max <= 0.2:
+                vc=int(i/iteration_max*255)
+                im[x,y]=(0,vc,0)
+            elif i/iteration_max <= 0.4:
+                vc=int(i/iteration_max*255)
+                im[x,y]=(0,int(vc/2),int(vc/2))
+            elif i/iteration_max <= 0.6:
+                vc=int(i/iteration_max*255)
                 im[x,y]=(0,0,vc)
-            elif i/iteration_max <= 0.66:
+            elif i/iteration_max <= 0.8:
                 vc=int(i/iteration_max*255)
                 im[x,y]=(int(vc/2),0,int(vc/2))
             elif i < iteration_max:
-                vc=int(i/iteration_max*125)
+                vc=int(i/iteration_max*255)
                 im[x,y]=(vc,0,0)
             else:
                 im[x,y]=(0,0,0)
@@ -54,18 +60,17 @@ def methode1(x1,x2,y1,y2,iteration_max,itx,ity):
 
 
 tex,tey=1024,1024
-x,y=-0.1011,0.9563
+x,y=-0.10,0.9063
 n=0
-n1,n2=1,10000
-pas=100
-ratio=10000
+n1,n2=10000,1000000
+pas=10000
+ratio=700000
 nt=(n2-n1)/pas
 for w in range(n1,n2,pas)[::-1]:
-    
     n+=1
     print("\nIMAGE "+str(n)+"/"+str(nt))
     www=w/ratio
-    ww=www/5000.0
+    ww=www
     x1=x-ww
     x2=x+ww
     y1=y-ww
@@ -98,4 +103,9 @@ for i in range(len(liste)):
 	out.write(frame)
 print('vidéo créée')
 out.release()
+
+os.system("dir")
+os.system("git add *")
+os.system("git commit -m 'aaaa'")
+os.system("git push")
 
